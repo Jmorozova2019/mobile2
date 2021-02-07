@@ -1,20 +1,24 @@
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+/**
+ * Ex 1 Конфигурация инструментов
+ */
 public class FirstTest {
 
     private AppiumDriver driver;
 
     @Before
-    public void setUp() throws Exception
-    {
-        DesiredCapabilities  capabilities = new DesiredCapabilities();
+    public void setUp() throws Exception {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
 
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName", "QVGA");
@@ -29,14 +33,12 @@ public class FirstTest {
     }
 
     @After
-    public void tearDown()
-    {
+    public void tearDown() {
         driver.quit();
     }
 
     @Test
-    public void firstTest()
-    {
+    public void firstTest() {
         System.out.println("First test run");
     }
 }
