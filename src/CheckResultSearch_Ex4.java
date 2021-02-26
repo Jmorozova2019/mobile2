@@ -1,4 +1,4 @@
-import Utils.AssertUtils;
+import Utils.Checker;
 import Utils.Locator;
 import Utils.WaitUtils;
 import io.appium.java_client.AppiumDriver;
@@ -21,7 +21,7 @@ import java.util.List;
 public class CheckResultSearch_Ex4 {
 
     private AppiumDriver driver;
-    private AssertUtils assertUtils;
+    private Checker checker;
     private WaitUtils waitUtils;
 
     @Before
@@ -40,7 +40,7 @@ public class CheckResultSearch_Ex4 {
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 
         waitUtils = new WaitUtils(driver);
-        assertUtils = new AssertUtils(waitUtils);
+        checker = new Checker(waitUtils);
     }
 
     @After

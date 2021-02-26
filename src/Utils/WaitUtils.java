@@ -13,6 +13,7 @@ public class WaitUtils
     {
         this.driver = driver;
     }
+    public WebDriver getDriver(){return  driver;}
 
     public WebElement waitForElementPresent(Locator locator, String error_message, int timeoutInSecond)
     {
@@ -29,14 +30,19 @@ public class WaitUtils
         return waitForElementPresent(locator, error_message, 5);
     }
 
-    //не получилось использовать
-    private void waitForElementNotPresent(Locator locator, String error_message, int timeoutInSecond) {
+    //retest
+    public void waitForElementNotPresent(Locator locator, String error_message, int timeoutInSecond)
+    {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
         wait.withMessage(error_message + "\n");
 
         wait.until(
-                ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(locator.getBy()))
+                ExpectedConditions.invisibilityOfElementLocated(locator.getBy())
         );
     }
 
+    public void waitForElementNotPresent(Locator locator, String error_message)
+    {
+        waitForElementNotPresent(locator, error_message, 5);
+    }
 }

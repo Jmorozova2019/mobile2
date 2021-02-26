@@ -1,6 +1,9 @@
 package Utils;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import java.util.List;
 
 public class Locator
 {
@@ -42,7 +45,19 @@ public class Locator
         }
     }
 
+    public Locator(String locator)
+    {
+        this.locator = locator;
+        this.strategy = "xpath";
+        by = By.xpath(this.locator);
+    }
+
     public String getStrategy(){ return strategy; }
     public String getLocator(){ return locator; }
     public By getBy() { return by; }
+
+    public int getAmountOfElements(WebDriver driver) {
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
 }
