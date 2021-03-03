@@ -1,4 +1,4 @@
-package Utils;
+package lib.utils;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -32,9 +32,6 @@ public class Checker
 
     public void assertElementsPresentNowByXpath(String locatorString, String error_message)
     {
-         Assert.assertTrue(
-             error_message,
-             driver.findElements(By.xpath(locatorString)).size() != 0
-         );
+        Assert.assertTrue(error_message, driver.findElements(By.xpath(locatorString)).size() != 0);
     }
 }

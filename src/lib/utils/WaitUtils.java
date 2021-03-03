@@ -1,5 +1,6 @@
-package Utils;
+package lib.utils;
 
+import lib.utils.Locator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;

@@ -1,13 +1,11 @@
-package Utils;
+package lib.utils;
 
-import io.appium.java_client.MobileDriver;
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.WebElement;
 
 
 public class SafeAction {
-    private  WaitUtils waitUtils;
+    private WaitUtils waitUtils;
 
     public SafeAction(WaitUtils waitUtils)
     {
