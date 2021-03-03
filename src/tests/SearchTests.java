@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 
 import org.junit.Test;
@@ -65,5 +66,25 @@ public class SearchTests extends CoreTestCase
 
         searchPageObject.clickCancelSearch();
         searchPageObject.assertThereIsNotResultOfSearch();
+    }
+
+    @Test
+    public void testSearchByTitleAndDescription_Ex4_after_refactoring() {
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+
+        int amount_of_search_result = searchPageObject.getAmountOfFoundArticles();
+        assertTrue("We found two few results!", amount_of_search_result > 2);
+
+        searchPageObject.waitForElementByTitleAndDescription("Java",
+                "Island of Indonesia");
+
+        searchPageObject.waitForElementByTitleAndDescription("JavaScript",
+                "Programming language");
+
+        searchPageObject.waitForElementByTitleAndDescription("Java (programming language)",
+                "Object-oriented programming language");
     }
 }

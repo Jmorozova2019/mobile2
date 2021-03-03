@@ -11,10 +11,13 @@ public class SearchPageObject extends MainPageObject{
     SEARCH_INPUT = "//*[contains(@text,'Search…')]",
     SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
     SEARCH_RESULT_BY_SUBSTRING_TPL =
-        "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text ='{SUBSTRING}']",
+        "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+
+    SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL =
+            "//*[@text='{SUBSTRING_DESCRIPTION}']/../*[@text='{SUBSTRING_TITLE}']",
+
     SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']" +
          "/*[@resource-id='org.wikipedia:id/page_list_item_container']";
-
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -25,6 +28,13 @@ public class SearchPageObject extends MainPageObject{
     private static String getResultSearchElement(String substring)
     {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getResultSearchElementByTitleAndByDescription(String title, String description)
+    {
+        String search_result_locator_after_replace_title =
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{SUBSTRING_TITLE}", title);
+        return search_result_locator_after_replace_title.replace("{SUBSTRING_DESCRIPTION}", description);
     }
     /* Template */
 
@@ -97,11 +107,19 @@ public class SearchPageObject extends MainPageObject{
         return new Locator(SEARCH_RESULT_ELEMENT).getAmountOfElements(driver);
     }
 
-
     public void assertThereIsNotResultOfSearch()
     {
         checker.assertElementNotPresent(new Locator(SEARCH_RESULT_ELEMENT),
                 "We supported not to find any result"
+        );
+    }
+
+    public void waitForElementByTitleAndDescription(String title, String description)
+    {
+        String locator = getResultSearchElementByTitleAndByDescription(title, description);
+
+        waitUtils.waitForElementPresent(new Locator(locator),
+                "Cannot find anything article by title " + title + "and description " + description
         );
     }
 }
