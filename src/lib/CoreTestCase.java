@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import junit.framework.TestCase;
 
+import org.junit.AfterClass;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -30,6 +31,12 @@ public class CoreTestCase extends TestCase {
 
         driver = new AndroidDriver(new URL(AppiumUrl), capabilities);
 
+        //rotateScreenPotrait();
+    }
+
+    @AfterClass
+    private void rotateScreenPotraitBeforTest()
+    {
         rotateScreenPotrait();
     }
 
