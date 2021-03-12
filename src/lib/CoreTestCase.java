@@ -3,12 +3,12 @@ package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import junit.framework.TestCase;
-
 import org.junit.AfterClass;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
+import java.time.Duration;
 
 public class CoreTestCase extends TestCase {
     protected AppiumDriver driver;
@@ -57,8 +57,8 @@ public class CoreTestCase extends TestCase {
         driver.rotate(ScreenOrientation.LANDSCAPE);
     }
 
-    protected void backgroundApp(int second)
+    protected void backgroundApp(Duration durationOfSecond)
     {
-        driver.runAppInBackground(second);
+        driver.runAppInBackground(durationOfSecond);
     }
 }

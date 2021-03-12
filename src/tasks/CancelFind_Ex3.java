@@ -1,18 +1,17 @@
-import Utils.AssertUtils;
-import Utils.Locator;
-import Utils.WaitUtils;
+package tasks;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import lib.utils.Locator;
+import lib.utils.WaitUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.net.URL;
-
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.URL;
 
 /**
  * Ex3 Тест: Отмена поиска

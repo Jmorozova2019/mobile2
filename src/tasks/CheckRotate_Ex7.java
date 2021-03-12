@@ -1,13 +1,17 @@
-import Utils.*;
+package tasks;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import lib.utils.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
 
-public class AssertTitle_Ex6
+public class CheckRotate_Ex7
 {
     private AppiumDriver driver;
     private Checker checker;
@@ -36,8 +40,20 @@ public class AssertTitle_Ex6
         swipe = new Swipe(driver, waitUtils);
     }
 
+    @After
+    public void tearDown()
+    {
+        driver.quit();
+    }
+
     @Test
-    public void testAssertElementPresent()
+    public void rotaiteToPortrait()
+    {
+        driver.rotate(ScreenOrientation.PORTRAIT);
+    }
+
+    @Test
+    public void testCheckRotate_1()
     {
         safeAction.click(
             new Locator("//*[contains(@text,'Search Wikipedia')]"),
@@ -51,19 +67,8 @@ public class AssertTitle_Ex6
             5
         );
 
-        safeAction.click(
-            new Locator("//*[@text='Object-oriented programming language']"),
-            "Cannot find article 'Object-oriented programming language'"
-        );
-        //считаем что статья открыта, если есть кнопка Найти (лупа)
-        waitUtils.waitForElementPresent(
-            new Locator("//*[@resource-id='org.wikipedia:id/menu_page_search']"),
-            "Cannot open article"
-        );
-
-        checker.assertElementsPresentNowByXpath(
-            "//*[contains(@resource-id, 'view_page_title_text')]",
-            "In the article not found title"
-        );
+        driver.rotate(ScreenOrientation.LANDSCAPE);
     }
+
+
 }

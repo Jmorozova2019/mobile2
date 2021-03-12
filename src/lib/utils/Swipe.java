@@ -1,11 +1,15 @@
 package lib.utils;
 
 import io.appium.java_client.MobileDriver;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.Dimension;
 
 import io.appium.java_client.TouchAction;
+
+import java.time.Duration;
 
 
 public class Swipe {
@@ -28,11 +32,11 @@ public class Swipe {
         int end_y = (int) (size.height*0.2);
 
         action
-                .press(x, start_y)
-                .waitAction(timeOfSwipe)
-                .moveTo(x, end_y)
-                .release()
-                .perform();
+            .press(new PointOption().point(x, start_y))
+            .waitAction(new WaitOptions().withDuration(Duration.ofSeconds(timeOfSwipe)))
+            .moveTo(new PointOption().point(x, end_y))
+            .release()
+            .perform();
     }
 
     public void swipeUpQuick()
@@ -49,8 +53,8 @@ public class Swipe {
             if (already_swiped > max_swipe)
             {
                 waitUtils.waitForElementPresent(
-                        locator,
-                        "Cannot find element by swiing up. \n" + error_message);
+                    locator,
+                    "Cannot find element by swiing up. \n" + error_message);
                 return;
             }
             swipeUpQuick();
@@ -68,10 +72,10 @@ public class Swipe {
         int middle_y = (upper_y + lower_y)/2;
 
         TouchAction action = new TouchAction((MobileDriver) driver);
-        action.press(right_x, middle_y)
-                .waitAction(300)
-                .moveTo(left_x, middle_y)
-                .release()
-                .perform();
+        action.press(new PointOption().point(right_x, middle_y))
+            .waitAction(new WaitOptions().withDuration(Duration.ofMillis(300)))
+            .moveTo(new PointOption().point(left_x, middle_y))
+            .release()
+            .perform();
     }
 }

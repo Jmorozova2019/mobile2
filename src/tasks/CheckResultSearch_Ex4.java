@@ -1,6 +1,8 @@
-import Utils.Checker;
-import Utils.Locator;
-import Utils.WaitUtils;
+package tasks;
+
+import lib.utils.Checker;
+import lib.utils.Locator;
+import lib.utils.WaitUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 

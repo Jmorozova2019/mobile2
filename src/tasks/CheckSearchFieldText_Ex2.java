@@ -1,16 +1,16 @@
-import Utils.AssertUtils;
-import Utils.Locator;
-import Utils.WaitUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.net.URL;
+package tasks;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
-
+import lib.utils.Checker;
+import lib.utils.Locator;
+import lib.utils.WaitUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.URL;
 
 /**
  * Ex2: Создание метода (проверка что поле ввода поиска статьи содержит текст "Search Wikipedia")
@@ -18,7 +18,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 public class CheckSearchFieldText_Ex2 {
 
     private AppiumDriver driver;
-    private AssertUtils assertUtils;
+    private Checker checker;
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +35,7 @@ public class CheckSearchFieldText_Ex2 {
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 
-        assertUtils = new AssertUtils(new WaitUtils(driver));
+        checker = new Checker(new WaitUtils(driver));
     }
 
     @After
@@ -52,7 +52,7 @@ public class CheckSearchFieldText_Ex2 {
         String expectedText = "Search Wikipedia";
         String errorMessage = "Cannot find search input";
 
-        assertUtils.assertElementHasText(loc, expectedText, errorMessage);
+        checker.assertElementHasText(loc, expectedText, errorMessage);
     }
 }
 

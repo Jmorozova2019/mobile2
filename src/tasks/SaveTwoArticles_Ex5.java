@@ -1,8 +1,9 @@
-import Utils.*;
+package tasks;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 
+import lib.utils.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,13 +108,13 @@ public class SaveTwoArticles_Ex5
         safeAction.click(
             new Locator("//*[@text='OK']"),
             "Cannot press OK button"
-        );
-
+        );//add first article
+//------------------------------------
         safeAction.click(
             new Locator("//android.widget.ImageButton[@content-desc='Navigate up']"),
             "Cannot close article, cannot find X link"
         );
-
+//----
         safeAction.click(
             new Locator("//*[contains(@text,'Search Wikipedia')]"),
             "Cannot find 'Search Wikipedia' input"
@@ -157,7 +158,7 @@ public class SaveTwoArticles_Ex5
             new Locator("//*[@resource-id='org.wikipedia:id/item_title' and @text='" + name_of_folder +"']"),
             "Cannot folder " + name_of_folder + " to list folders"
         );
-
+//------------
         safeAction.click(
             new Locator("//android.widget.ImageButton[@content-desc='Navigate up']"),
             "Cannot close article, cannot find X link"
