@@ -2,8 +2,8 @@ package tasks;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
-import lib.utils.Locator;
-import lib.utils.WaitUtils;
+import lib.ui.MainPageObject;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,10 +16,13 @@ import java.net.URL;
 /**
  * Ex3 Тест: Отмена поиска
  */
-public class CancelFind_Ex3 {
+public class CancelFind_Ex3 extends MainPageObject {
 
     private AppiumDriver driver;
-    private WaitUtils waitUtils;
+
+    public CancelFind_Ex3(AppiumDriver driver) {
+        super(driver);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -35,8 +38,6 @@ public class CancelFind_Ex3 {
                 "/Users/Zhanna/Desktop/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
-        waitUtils = new WaitUtils(driver);
     }
 
     @After
@@ -49,41 +50,24 @@ public class CancelFind_Ex3 {
         WebElement element_to_init_search = driver.findElementByXPath("//*[contains(@text, 'Search Wikipedia')]");
         element_to_init_search.click();
 
-        WebElement element_to_enter_search_line = waitUtils.waitForElementPresent(
-                new Locator("xpath", "//*[contains(@text, 'Search…')]"),
-                "Cannot find search input"
-        );
+        WebElement element_to_enter_search_line = waitForElementPresent("xpath://*[contains(@text, 'Search…')]",
+                "Cannot find search input");
 
         element_to_enter_search_line.sendKeys("Java");
-        String result_search_xpath = "//*[contains(@resource-id, 'page_list_item_container')]";
-        waitUtils.waitForElementPresent(
-                new Locator("xpath", result_search_xpath),
-                "Cannot find any topic searching by 'Java'",
-                15
-        );
+        String result_search_xpath = "xpath://*[contains(@resource-id, 'page_list_item_container')]";
+        waitForElementPresent(result_search_xpath,
+                "Cannot find any topic searching by 'Java'", 15);
         //можно обойтись предыдущей проверкой - там проверяется что найдена по крайней мере одна статья
         Assert.assertTrue(driver.findElementsByXPath(result_search_xpath).size() > 0);
 
         WebElement element_close_btn = driver.findElementById("org.wikipedia:id/search_close_btn");
         element_close_btn.click();
 
-        //не получилось использовать
-        /*waitUtils.waitForElementNotPresent(
-                new Utils.Locator("xpath", result_search_xpath),
-                "After clearing the search field, the results of the previous search remain",
-                15
-        );*/
-
-        waitUtils.waitForElementPresent(
-                new Locator("xpath", "//*[contains(@text, 'Search…')]"),
-                "Cannot find search input"
-        );
+        waitForElementPresent("xpath://*[contains(@text, 'Search…')]", "Cannot find search input");
 
         String clear_error_message = "After clearing the search field, the results of the previous search remain";
-        Assert.assertTrue(
-                clear_error_message,
-                driver.findElementsByXPath(result_search_xpath).size() == 0
-        );
+        Assert.assertTrue(clear_error_message,
+                driver.findElementsByXPath(result_search_xpath).size() == 0);
     }
 }
 

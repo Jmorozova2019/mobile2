@@ -2,9 +2,8 @@ package tasks;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
-import lib.utils.Checker;
-import lib.utils.Locator;
-import lib.utils.WaitUtils;
+
+import lib.ui.MainPageObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +14,13 @@ import java.net.URL;
 /**
  * Ex2: Создание метода (проверка что поле ввода поиска статьи содержит текст "Search Wikipedia")
  */
-public class CheckSearchFieldText_Ex2 {
+public class CheckSearchFieldText_Ex2 extends MainPageObject {
 
     private AppiumDriver driver;
-    private Checker checker;
+
+    public CheckSearchFieldText_Ex2(AppiumDriver driver) {
+        super(driver);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -34,8 +36,6 @@ public class CheckSearchFieldText_Ex2 {
                 "/Users/Zhanna/Desktop/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
-        checker = new Checker(new WaitUtils(driver));
     }
 
     @After
@@ -46,13 +46,11 @@ public class CheckSearchFieldText_Ex2 {
     @Test
     public void fieldSearchContainsSearch_Ex2()
     {
-        String search_field_xpath = "//*[contains(@resource-id, 'search_container')]/android.widget.TextView";
-        Locator loc = new Locator("xpath", search_field_xpath);
-
+        String search_field_xpath = "xpath://*[contains(@resource-id, 'search_container')]/android.widget.TextView";
         String expectedText = "Search Wikipedia";
         String errorMessage = "Cannot find search input";
 
-        checker.assertElementHasText(loc, expectedText, errorMessage);
+        assertElementHasText(search_field_xpath, expectedText, errorMessage);
     }
 }
 

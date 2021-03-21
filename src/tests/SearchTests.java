@@ -39,8 +39,8 @@ public class SearchTests extends CoreTestCase
         int amount_of_search_result = searchPageObject.getAmountOfFoundArticles();
 
         assertTrue(
-                "We found two few results!",
-                amount_of_search_result > 0
+            "We found two few results!",
+            amount_of_search_result > 0
         );
     }
 

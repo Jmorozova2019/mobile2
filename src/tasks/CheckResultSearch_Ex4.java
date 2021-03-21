@@ -1,8 +1,7 @@
 package tasks;
 
-import lib.utils.Checker;
-import lib.utils.Locator;
-import lib.utils.WaitUtils;
+import lib.ui.MainPageObject;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -20,11 +19,13 @@ import java.util.List;
 /**
  * Ex4 Тест: проеверка слов в поиске
  */
-public class CheckResultSearch_Ex4 {
+public class CheckResultSearch_Ex4 extends MainPageObject {
 
     private AppiumDriver driver;
-    private Checker checker;
-    private WaitUtils waitUtils;
+
+    public CheckResultSearch_Ex4(AppiumDriver driver) {
+        super(driver);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -40,9 +41,6 @@ public class CheckResultSearch_Ex4 {
                 "/Users/Zhanna/Desktop/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
-        waitUtils = new WaitUtils(driver);
-        checker = new Checker(waitUtils);
     }
 
     @After
@@ -55,19 +53,14 @@ public class CheckResultSearch_Ex4 {
         WebElement element_to_init_search = driver.findElementByXPath("//*[contains(@text, 'Search Wikipedia')]");
         element_to_init_search.click();
 
-        WebElement element_to_enter_search_line = waitUtils.waitForElementPresent(
-                new Locator("xpath", "//*[contains(@text, 'Search…')]"),
-                "Cannot find search input"
-        );
+        WebElement element_to_enter_search_line = waitForElementPresent(
+            "xpath://*[contains(@text, 'Search…')]", "Cannot find search input");
 
         String searchText = "Java";
         element_to_enter_search_line.sendKeys(searchText);
-        String result_title_search_xpath = "//*[contains(@resource-id, 'page_list_item_title')]";
-        waitUtils.waitForElementPresent(
-                new Locator("xpath", result_title_search_xpath),
-                "Cannot find any topic searching by 'Java'",
-                15
-        );
+        String result_title_search_xpath = "xpath://*[contains(@resource-id, 'page_list_item_title')]";
+        waitForElementPresent(result_title_search_xpath,
+                "Cannot find any topic searching by 'Java'", 15);
 
         List<WebElement> resTitles = driver.findElementsByXPath(result_title_search_xpath);
         String error_text_in_search_result = "As a result, there is no search word";
