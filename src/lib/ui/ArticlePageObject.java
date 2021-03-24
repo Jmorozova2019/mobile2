@@ -1,20 +1,25 @@
 package lib.ui;
 
+import lib.Platform;
 import org.junit.Assert;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;
 
-public class ArticlePageObject extends MainPageObject {
-    private static final String
-        TITLE = "xpath://*[@resource-id='org.wikipedia:id/view_page_title_text']",
-        FOOTER_ELEMENT = "xpath://*[@text='View page in browser']",
-        OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-        OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-        ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-        MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-        MY_LIST_NAME_BUTTON = "xpath://*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
-        SEARCH_LANG_BUTTON = "xpath://*[@resource-id='org.wikipedia:id/search_lang_button']";
+abstract public class ArticlePageObject extends MainPageObject {
+    protected static String
+        TITLE,
+        FOOTER_ELEMENT,
+        OPTIONS_BUTTON,
+        SAVE_BUTTON,
+        NOTIFICATION_ADDED_TO_LIST,
+        REMOVE_FROM_SAVED,
+        OPTIONS_ADD_TO_MY_LIST_BUTTON,
+        ADD_TO_MY_LIST_OVERLAY,
+        MY_LIST_NAME_INPUT,
+        MY_LIST_OK_BUTTON,
+        CLOSE_ARTICLE_BUTTON,
+        CLOSE_SEARCH_ARTICLE_LIST,
+        SEARCH_LANG_BUTTON;
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -29,12 +34,22 @@ public class ArticlePageObject extends MainPageObject {
     public String getArticleTitle()
     {
         WebElement titleElement = waitForTitleElement();
-        return titleElement.getAttribute("text");
+        if(Platform.getInstance().isAndroid())
+        {
+            return titleElement.getAttribute("text");
+        } else
+        {
+            return titleElement.getAttribute("name");
+        }
     }
 
     public  void swipeToFooter()
     {
-        swipeUpToFindElement(FOOTER_ELEMENT,"Cannot find end of article", 20);
+        if (Platform.getInstance().isAndroid()){
+            swipeUpToFindElement(FOOTER_ELEMENT,"Cannot find end of article", 40);
+        } else {
+            swipeUpTillElementAppear(FOOTER_ELEMENT, "Cannot find end of article", 40);
+        }
     }
 
     public void addArticleToMyList(String name_of_folder)
@@ -46,9 +61,9 @@ public class ArticlePageObject extends MainPageObject {
         click(ADD_TO_MY_LIST_OVERLAY,"Cannot find 'GOT IT' tip overlay");
         clear(MY_LIST_NAME_INPUT, "Cannot find input to set name of articles folder");
         sendKeysWithoutPaste(MY_LIST_NAME_INPUT,"Cannot put text into articles folder input", name_of_folder);
-        click(MY_LIST_NAME_BUTTON,"Cannot press OK button");
+        click(MY_LIST_OK_BUTTON,"Cannot press OK button");
     }
-
+/*
     public void addSecondArticleToMyList(String name_of_folder)
     {
         click( OPTIONS_BUTTON,"Cannot find button to open article options");
@@ -58,11 +73,26 @@ public class ArticlePageObject extends MainPageObject {
         click("//*[@resource-id='org.wikipedia:id/item_title' and @text='" + name_of_folder +"']",
             "Cannot folder " + name_of_folder + " to list folders"
         );
+    }*/
+
+    public void addArticleToMySaved()
+    {
+        //click(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
+        click(SAVE_BUTTON, "Cannot find button to open article options");
+        waitForElementPresent(NOTIFICATION_ADDED_TO_LIST,
+                "Cannot find notification of saved article");
+        waitForElementNotPresent(NOTIFICATION_ADDED_TO_LIST,
+                "No close notification of saved article");
     }
 
     public void closeArticle()
     {
-        click(CLOSE_ARTICLE_BUTTON,"Cannot close article, cannot find X link");
+        click(CLOSE_ARTICLE_BUTTON,"Cannot close article, cannot find back button");
+    }
+
+    public void closeSearchArticleList()
+    {
+        click(CLOSE_SEARCH_ARTICLE_LIST,"Cannot close article list, cannot find back button");
     }
 
     public void isArticleTitleEqualsExpected(String expected_title)
@@ -75,4 +105,5 @@ public class ArticlePageObject extends MainPageObject {
     {
         assertElementsPresentNowByXpath(TITLE, error_message);
     }
+
 }

@@ -1,16 +1,19 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
 public class WelcomePageObject extends MainPageObject{
 
     private static final String
     STEP_LEARN_MORE_LINK = "id:Learn more about Wikipedia",
     STEP_NEW_WAYS_TO_EXPLORE_TEXT = "id:New way to explore",
-    STEP_ADD_OR_EDIT_PREFERRED_LANG_LINK = "id:Add or edit preffered languages",
+    STEP_ADD_OR_EDIT_PREFERRED_LANG_LINK = "id:Add or edit preferred languages",
     STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "id:Learn more about data collected",
     NEXT_LINK = "id:Next",
-    GET_STARTED_BUTTON = "id:Get started";
+    GET_STARTED_BUTTON = "id:Get started",
+    SKIP_IOS = "id:Skip",
+    SKIP_ANDROID = "id:org.wikipedia:id/fragment_onboarding_skip_button";
 
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
@@ -48,5 +51,15 @@ public class WelcomePageObject extends MainPageObject{
     public void clickGetStartedButton()
     {
         clear(GET_STARTED_BUTTON,"Cannot find and click 'Get started' link",10);
+    }
+
+    //Почему-то у меня Андроид тоже стартует со страницы приветствия
+    public void clickSkip()
+    {
+        if (Platform.getInstance().isIOS()) {
+            click(SKIP_IOS, "Cannot find and click skip button", 5);
+        } else {
+            click(SKIP_ANDROID, "Cannot find and click skip button", 5);
+        }
     }
 }

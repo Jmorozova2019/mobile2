@@ -1,18 +1,19 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListPageObject extends MainPageObject{
+abstract public class MyListPageObject extends MainPageObject{
 
-    private static final String
-        FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-        ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
+    protected static String
+        SAVED_BLOCK,
+        FOLDER_BY_NAME_TPL,
+        ARTICLE_BY_TITLE_TPL;
 
     public MyListPageObject(AppiumDriver driver)
     {
         super(driver);
     }
-
 
     private static String getFolderByName(String name_of_folder)
     {
@@ -30,12 +31,22 @@ public class MyListPageObject extends MainPageObject{
         click(folder_name, "Cannot find folder", 15);
     }
 
+    public void clickSavedBlock()
+    {
+        click(SAVED_BLOCK, "Cannot find folder", 15);
+    }
+
     public void swipeByArticleToDelete(String article_title) throws InterruptedException {
         waitForArticleToAppearByTitle(article_title);
         Thread.sleep(1000);
 
         String article_title_rpl = getSavedArticleByTitle(article_title);
         swipeElementToLeft(article_title_rpl, "Cannot find saved article");
+
+        if (Platform.getInstance().isIOS()) {
+            clickElementToTheRightUpperCorner(article_title_rpl, "Cannot find saved article");
+        }
+
         waitForArticleToDisappearByTitle(article_title);
     }
 

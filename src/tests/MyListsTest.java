@@ -1,81 +1,98 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 
 public class MyListsTest extends CoreTestCase
 {
+    private static final String name_of_folder = "Learning programming";
+
     @Test
     public void testSaveFirstArticleToMyList() throws InterruptedException {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
-
         String article_title = articlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
+        articlePageObject.addArticleToMySaved();
 
-        articlePageObject.addArticleToMyList(name_of_folder);
         articlePageObject.closeArticle();
+        articlePageObject.closeSearchArticleList();//выйти из списка статей по кнопке Назад
 
-        NavigationUI navigationUI = new NavigationUI(driver);
-        navigationUI.clickMyList();
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        //navigationUI.clickMyList();
+        navigationUI.clickSavedButton();
 
-        MyListPageObject myListPageObject = new MyListPageObject(driver);
-        myListPageObject.openFolderByName(name_of_folder);
+        MyListPageObject myListPageObject = MyListPageObjectFactory.get(driver);
+
+        //Блок Saved - в списке есть статья
+        if (Platform.getInstance().isAndroid()) {
+            //myListPageObject.openFolderByName(name_of_folder);
+            myListPageObject.clickSavedBlock();//возможно, в iOS так же
+        }
+
         myListPageObject.swipeByArticleToDelete(article_title);
     }
 
     @Test
-    public void testSaveTwoArticleAndDeleteOne_Ex5_after_refactoring() throws InterruptedException {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+    public void testSaveTwoArticleAndDeleteOne_Ex5_Ex11() throws InterruptedException {
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
-
         String first_article_title = articlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
-
-        articlePageObject.addArticleToMyList(name_of_folder);
+        //String name_of_folder = "Learning programming";
+        //articlePageObject.addArticleToMyList(name_of_folder);
+        articlePageObject.addArticleToMySaved();
         articlePageObject.closeArticle();
+        //articlePageObject.closeSearchArticleList();//выйти из списка статей по кнопке Назад
 
-        searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine("Java");
-        searchPageObject.clickByArticleWithSubstring("Programming language");
+        //searchPageObject.initSearchInput();
+        //searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("High-level programming language");
 
         articlePageObject.waitForTitleElement();
         String second_article_title = articlePageObject.getArticleTitle();
+        //articlePageObject.addSecondArticleToMyList(name_of_folder);
 
-        articlePageObject.addSecondArticleToMyList(name_of_folder);
+        articlePageObject.addArticleToMySaved();
         articlePageObject.closeArticle();
+        articlePageObject.closeSearchArticleList();//выйти из списка статей по кнопке Назад
 
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        //navigationUI.clickMyList();
+        navigationUI.clickSavedButton();
 
-        NavigationUI navigationUI = new NavigationUI(driver);
-        navigationUI.clickMyList();
+        MyListPageObject myListPageObject = MyListPageObjectFactory.get(driver);
+        if (Platform.getInstance().isAndroid()) {
+            //myListPageObject.openFolderByName(name_of_folder);
+            myListPageObject.clickSavedBlock();
+        }
 
-        MyListPageObject myListPageObject = new MyListPageObject(driver);
-        myListPageObject.openFolderByName(name_of_folder);
         myListPageObject.swipeByArticleToDelete(first_article_title);
-
         myListPageObject.waitForArticleToAppearByTitle(second_article_title);
-
         myListPageObject.openArticleFromMyList(second_article_title);
-        articlePageObject.waitForTitleElement();
 
+        articlePageObject.waitForTitleElement();
         articlePageObject.isArticleTitleEqualsExpected(second_article_title);
     }
 }

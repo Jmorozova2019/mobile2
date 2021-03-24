@@ -3,6 +3,7 @@ package tasks;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class CheckRotate extends CoreTestCase
     @Test
     public void testARotateToLanscape()
     {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -29,7 +30,7 @@ public class CheckRotate extends CoreTestCase
     @Test
     public void testBPortrateOrientation_Ex7()
     {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         Assert.assertTrue(driver.getOrientation().equals(ScreenOrientation.PORTRAIT));
